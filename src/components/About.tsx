@@ -73,7 +73,7 @@ const About = () => {
           <h2 className="text-3xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">
             Our Journey
           </h2>
-          <div className="max-w-3xl mx-auto space-y-8">
+          <div className="max-w-3xl flex items-center justify-center mx-auto space-y-8">
             <div className="flex items-center gap-4">
               <Calendar className="h-8 w-8 text-indigo-500 flex-shrink-0" />
               <div>
