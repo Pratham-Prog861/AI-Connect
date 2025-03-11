@@ -61,17 +61,17 @@ const ChatInterface = () => {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-16rem)]">
+    <div className="flex flex-col h-[calc(100vh-4rem)] sm:h-[calc(100vh-8rem)] md:h-[calc(100vh-16rem)]">
       <div className="flex-1 w-full max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-        <div className="h-16 p-4 border-b dark:border-gray-700 flex items-center">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+        <div className="h-12 sm:h-14 md:h-16 p-2 sm:p-3 md:p-4 border-b dark:border-gray-700 flex items-center">
+          <h2 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-white">
             Ask AIConnect
           </h2>
         </div>
 
-        <div className="flex flex-col h-[calc(100%-8rem)] p-4 overflow-y-auto">
+        <div className="flex flex-col h-[calc(100%-7rem)] sm:h-[calc(100%-8rem)] p-2 sm:p-3 md:p-4 overflow-y-auto">
           {showImageUploader && (
-            <div className="mb-4">
+            <div className="mb-3 sm:mb-4">
               <ImageUploader
                 onImageSelect={handleImageSelect}
                 onClose={() => setShowImageUploader(false)}
@@ -79,30 +79,30 @@ const ChatInterface = () => {
             </div>
           )}
           {selectedImage && (
-            <div className="mb-4 relative group">
+            <div className="mb-3 sm:mb-4 relative group">
               <img
                 src={selectedImage}
                 alt="Selected"
-                className="max-h-64 rounded-lg mx-auto"
+                className="max-h-48 sm:max-h-56 md:max-h-64 rounded-lg mx-auto"
               />
               <button
                 onClick={() => setSelectedImage(null)}
-                className="absolute top-2 right-2 p-2 bg-gray-800/50 hover:bg-gray-800/75 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute top-2 right-2 p-1.5 sm:p-2 bg-gray-800/50 hover:bg-gray-800/75 rounded-full text-white opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
                 disabled={isLoading}
               >
                 ×
               </button>
             </div>
           )}
-          {messages.map((message: { text: string; sender: "user" | "ai" }, index: number) => (
+          {messages.map((message, index) => (
             <div
               key={index}
               className={`flex ${
                 message.sender === "user" ? "justify-end" : "justify-start"
-              } mb-4`}
+              } mb-2 sm:mb-3 md:mb-4`}
             >
               <div
-                className={`max-w-[80%] p-3 rounded-lg ${
+                className={`max-w-[85%] sm:max-w-[80%] p-2 sm:p-3 rounded-lg text-sm sm:text-base ${
                   message.sender === "user"
                     ? "bg-indigo-500 text-white"
                     : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white"
@@ -119,19 +119,19 @@ const ChatInterface = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="h-16 p-2 border-t dark:border-gray-700">
-          <div className="flex items-center space-x-3">
+        <div className="h-14 sm:h-16 p-2 border-t dark:border-gray-700">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => setShowImageUploader(!showImageUploader)}
-              className="p-2 text-gray-500 hover:text-indigo-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
+              className="p-1.5 sm:p-2 text-gray-500 hover:text-indigo-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
               title="Upload Image"
               disabled={isLoading}
             >
-              <ImagePlus className="h-5 w-5" />
+              <ImagePlus className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
             <input
               type="text"
-              className="flex-grow p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className="flex-grow p-2 sm:p-3 text-sm sm:text-base border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               placeholder="Ask anything..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -143,20 +143,20 @@ const ChatInterface = () => {
               }}
             />
             <button
-              className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105"
+              className="px-3 sm:px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 flex items-center gap-1 sm:gap-2 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105"
               onClick={sendMessage}
               disabled={!input.trim() || isLoading}
             >
-              <span className="hidden sm:inline">
+              <Send className={`h-4 w-4 sm:h-5 sm:w-5 ${isLoading ? "animate-pulse" : ""}`} />
+              <span className="hidden sm:inline text-sm sm:text-base">
                 {isLoading ? "Sending..." : "Send"}
               </span>
-              <Send className={`h-5 w-5 ${isLoading ? "animate-pulse" : ""}`} />
             </button>
           </div>
         </div>
 
         {showImageUploader && (
-          <div className="absolute bottom-20 left-0 right-0 bg-white dark:bg-gray-800 p-4 shadow-lg rounded-lg">
+          <div className="fixed inset-x-0 bottom-16 sm:bottom-20 mx-2 sm:mx-auto max-w-lg bg-white dark:bg-gray-800 p-3 sm:p-4 shadow-lg rounded-lg">
             <ImageUploader
               onImageSelect={handleImageSelect}
               onClose={() => setShowImageUploader(false)}
