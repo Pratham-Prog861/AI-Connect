@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { ImagePlus, X, Check, Link as LinkIcon } from 'lucide-react';
+import { ImagePlus, X, Link as LinkIcon } from 'lucide-react';
 
 interface ImageUploaderProps {
   onImageSelect: (imageData: string) => void;
@@ -127,7 +127,8 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelect, onClose })
               }}
               className="absolute top-2 right-2 p-1 bg-gray-800/50 hover:bg-gray-800/75 rounded-full text-white"
             >
-              <X className="w-5 w-5" />
+              <X className="h-5 w-5 text-gray-500 hover:text-gray-700" />
+                // Removed duplicate class: w-5
             </button>
           </div>
         )}

@@ -35,7 +35,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ children, language = 'plaintext' 
           code={children.trim()}
           language={language}
         >
-          {({ className, style, tokens, getLineProps, getTokenProps }) => (
+          {({ style, tokens, getLineProps, getTokenProps }) => (
             <pre className="p-4 bg-[#011627] overflow-x-auto" style={style}>
               {tokens.map((line, i) => (
                 <div key={i} {...getLineProps({ line })}>
@@ -51,5 +51,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ children, language = 'plaintext' 
     </div>
   );
 };
+
+// Removed unused component: CodeBlockSimple
 
 export default CodeBlock;

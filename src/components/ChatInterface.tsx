@@ -1,14 +1,16 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Send, ImagePlus } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { getGeminiResponse } from '../services/geminiService';
-import LoadingAnimation from './LoadingAnimation';
-import ImageUploader from './ImageUploader';
-import { Upload } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react'; // Added missing imports
+import { Send, ImagePlus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { getGeminiResponse } from "../services/geminiService";
+import ImageUploader from "./ImageUploader"; // Removed unused imports
+import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
+// Removed unused imports: LoadingAnimation, Upload
 
 const ChatInterface = () => {
-  const [messages, setMessages] = useState<Array<{ text: string; sender: 'user' | 'ai' }>>([]);
-  const [input, setInput] = useState<string>('');
+  const [messages, setMessages] = useState<
+    Array<{ text: string; sender: "user" | "ai" }>
+  >([]);
+  const [input, setInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [showImageUploader, setShowImageUploader] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -16,7 +18,7 @@ const ChatInterface = () => {
   const navigate = useNavigate();
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -29,25 +31,28 @@ const ChatInterface = () => {
   };
 
   const sendMessage = async () => {
-    if (input.trim() !== '') {
+    if (input.trim() !== "") {
       const userMessage = input.trim();
-      setMessages(prev => [...prev, { text: userMessage, sender: 'user' }]);
-      setInput('');
+      setMessages((prev: Array<{ text: string; sender: "user" | "ai" }>) => [...prev, { text: userMessage, sender: "user" }]);
+      setInput("");
       setIsLoading(true);
-
+  
       try {
-const response = await getGeminiResponse(userMessage);
-        navigate('/answer', { 
-          state: { 
+        const response = await getGeminiResponse(userMessage);
+        navigate("/answer", {
+          state: {
             question: userMessage,
             answer: response,
-            image: selectedImage 
-          } 
+            image: selectedImage,
+          },
         });
       } catch (error) {
-        setMessages(prev => [
+        setMessages((prev: Array<{ text: string; sender: "user" | "ai" }>) => [
           ...prev,
-          { text: 'Sorry, I encountered an error. Please try again.', sender: 'ai' }
+          {
+            text: "Sorry, I encountered an error. Please try again.",
+            sender: "ai",
+          },
         ]);
       } finally {
         setIsLoading(false);
@@ -59,20 +64,25 @@ const response = await getGeminiResponse(userMessage);
     <div className="flex flex-col h-[calc(100vh-16rem)]">
       <div className="flex-1 w-full max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
         <div className="h-16 p-4 border-b dark:border-gray-700 flex items-center">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-white">Ask AIConnect</h2>
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+            Ask AIConnect
+          </h2>
         </div>
 
         <div className="flex flex-col h-[calc(100%-8rem)] p-4 overflow-y-auto">
           {showImageUploader && (
             <div className="mb-4">
-              <ImageUploader onImageSelect={handleImageSelect} onClose={() => setShowImageUploader(false)} />
+              <ImageUploader
+                onImageSelect={handleImageSelect}
+                onClose={() => setShowImageUploader(false)}
+              />
             </div>
           )}
           {selectedImage && (
             <div className="mb-4 relative group">
-              <img 
-                src={selectedImage} 
-                alt="Selected" 
+              <img
+                src={selectedImage}
+                alt="Selected"
                 className="max-h-64 rounded-lg mx-auto"
               />
               <button
@@ -84,19 +94,25 @@ const response = await getGeminiResponse(userMessage);
               </button>
             </div>
           )}
-          {messages.map((message, index) => (
+          {messages.map((message: { text: string; sender: "user" | "ai" }, index: number) => (
             <div
               key={index}
-              className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} mb-4`}
+              className={`flex ${
+                message.sender === "user" ? "justify-end" : "justify-start"
+              } mb-4`}
             >
               <div
                 className={`max-w-[80%] p-3 rounded-lg ${
-                  message.sender === 'user'
-                    ? 'bg-indigo-500 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white'
+                  message.sender === "user"
+                    ? "bg-indigo-500 text-white"
+                    : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white"
                 }`}
               >
-                {message.text}
+                {message.sender === "ai" ? (
+                  <ReactMarkdown>{message.text}</ReactMarkdown>
+                ) : (
+                  message.text
+                )}
               </div>
             </div>
           ))}
@@ -120,7 +136,7 @@ const response = await getGeminiResponse(userMessage);
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
+                if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
                   sendMessage();
                 }
@@ -131,16 +147,18 @@ const response = await getGeminiResponse(userMessage);
               onClick={sendMessage}
               disabled={!input.trim() || isLoading}
             >
-              <span className="hidden sm:inline">{isLoading ? 'Sending...' : 'Send'}</span>
-              <Send className={`h-5 w-5 ${isLoading ? 'animate-pulse' : ''}`} />
+              <span className="hidden sm:inline">
+                {isLoading ? "Sending..." : "Send"}
+              </span>
+              <Send className={`h-5 w-5 ${isLoading ? "animate-pulse" : ""}`} />
             </button>
           </div>
         </div>
 
         {showImageUploader && (
           <div className="absolute bottom-20 left-0 right-0 bg-white dark:bg-gray-800 p-4 shadow-lg rounded-lg">
-            <ImageUploader 
-              onImageSelect={handleImageSelect} 
+            <ImageUploader
+              onImageSelect={handleImageSelect}
               onClose={() => setShowImageUploader(false)}
             />
           </div>

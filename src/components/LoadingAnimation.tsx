@@ -1,5 +1,3 @@
-import React from 'react';
-
 const LoadingAnimation = () => {
   return (
     <div className="flex items-center justify-center space-x-2 my-4">

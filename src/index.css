@@ -86,3 +86,19 @@ body {
 .token.variable {
   @apply text-orange-400;
 }
+
+/* Add these styles to make sure the answer items are visible */
+.answer-item {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
