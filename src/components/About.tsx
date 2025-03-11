@@ -101,7 +101,7 @@ const About = () => {
               className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
             />
             <h3 className="text-xl font-semibold mb-2">Pratham Darji</h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-4">Full Stack Developer</p>
+            <p className="text-gray-600 dark:text-gray-300 mb-4">Frontend Developer</p>
             <a 
               href="https://github.com/Pratham-Prog861" 
               target="_blank" 

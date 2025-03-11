@@ -6,6 +6,7 @@ import { getGeminiResponse } from '../services/geminiService';
 import LoadingAnimation from './LoadingAnimation';
 import CodeBlock from './CodeBlock';
 import ImageUploader from './ImageUploader';
+import SpeechControls from './SpeechControls';
 
 interface CodeProps {
   inline?: boolean;
@@ -40,12 +41,16 @@ const AnswerDisplay = () => {
     
     try {
       const response = await getGeminiResponse(followUpQuestion, selectedImage || undefined);
+      if (!response) {
+        throw new Error('Empty response from AI');
+      }
       setConversation(prev => [...prev, { type: 'answer', content: response }]);
       setFollowUpQuestion('');
     } catch (error) {
+      console.error('Error getting AI response:', error);
       setConversation(prev => [...prev, { 
         type: 'answer', 
-        content: 'Sorry, I encountered an error. Please try again.' 
+        content: 'Sorry, I encountered an error. Please try rephrasing your question or try again later.' 
       }]);
     } finally {
       setIsLoading(false);
@@ -83,7 +88,7 @@ const AnswerDisplay = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-white via-indigo-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="relative min-h-screen bg-[conic-gradient(at_top,_var(--tw-gradient-stops))]">
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <Link 
           to="/chat" 
@@ -112,25 +117,29 @@ const AnswerDisplay = () => {
           {conversation.map((item, index) => (
             <div 
               key={index} 
-              className="answer-item opacity-100 relative group" // Remove translate-y-4 and add opacity-100
+              className="answer-item opacity-100 relative group px-2 sm:px-0" 
             >
               <div
                 className={`${
                   item.type === 'question' 
                     ? 'bg-white/90 dark:bg-gray-700/90 border-l-4 border-purple-500' 
                     : 'bg-white/90 dark:bg-gray-800/90 border-l-4 border-indigo-500'
-                } backdrop-blur-sm p-6 sm:p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300`}
+                } backdrop-blur-sm p-4 sm:p-6 md:p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300`}
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-full ${item.type === 'question' ? 'bg-purple-100 dark:bg-purple-900/50' : 'bg-indigo-100 dark:bg-indigo-900/50'}`}>
-                      <MessageCircle className={`h-5 w-5 ${item.type === 'question' ? 'text-purple-500' : 'text-indigo-500'}`} />
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 gap-3 sm:gap-4">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className={`p-1.5 sm:p-2 rounded-full ${item.type === 'question' ? 'bg-purple-100 dark:bg-purple-900/50' : 'bg-indigo-100 dark:bg-indigo-900/50'}`}>
+                      <MessageCircle className={`h-4 w-4 sm:h-5 sm:w-5 ${item.type === 'question' ? 'text-purple-500' : 'text-indigo-500'}`} />
                     </div>
-                    <span className="text-base sm:text-lg font-medium">
+                    <span className="text-sm sm:text-base md:text-lg font-medium">
                       {item.type === 'question' ? 'Your Question' : 'AI Response'}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 sm:gap-3">
+                    <SpeechControls
+                      text={item.content}
+                      onSpeechInput={setFollowUpQuestion}
+                    />
                     {item.type === 'answer' && (
                       <>
                         <button
@@ -210,38 +219,43 @@ const AnswerDisplay = () => {
           )}
         </div>
 
-        <form onSubmit={handleFollowUp} className="mt-8 sticky bottom-6 sm:bottom-8">
-          <div className="flex gap-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-4 sm:p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
-            <button
-              type="button"
-              onClick={() => setShowImageUploader(true)}
-              className="p-2 text-gray-500 hover:text-indigo-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
-              title="Upload Image"
-            >
-              <ImagePlus className="h-5 w-5" />
-            </button>
+        <form onSubmit={handleFollowUp} className="mt-8 sticky bottom-4 sm:bottom-6 md:bottom-8 w-full px-2 sm:px-4">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-3 sm:p-4 md:p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
+            <div className="flex gap-2 sm:gap-3">
+              <button
+                type="button"
+                onClick={() => setShowImageUploader(true)}
+                className="p-2 text-gray-500 hover:text-indigo-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
+                title="Upload Image"
+              >
+                <ImagePlus className="h-5 w-5" />
+              </button>
+              <SpeechControls
+                text={followUpQuestion}
+                onSpeechInput={setFollowUpQuestion}
+              />
+            </div>
             <input
               type="text"
               value={followUpQuestion}
               onChange={(e) => setFollowUpQuestion(e.target.value)}
               placeholder="Ask a follow-up question..."
-              className="flex-1 p-3 sm:p-4 text-base sm:text-lg border rounded-lg dark:bg-gray-700/50 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+              className="flex-1 p-2 sm:p-3 text-sm sm:text-base border rounded-lg dark:bg-gray-700/50 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500"
               disabled={isLoading}
             />
             <button
               type="submit"
-              className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-lg hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-base sm:text-lg transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 shadow-md hover:shadow-xl font-medium"
+              className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-lg hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 shadow-md hover:shadow-xl font-medium min-w-[100px] sm:min-w-[120px]"
               disabled={!followUpQuestion.trim() || isLoading}
             >
               {isLoading ? (
                 <span className="flex items-center gap-2">
-                  <span className="animate-pulse">Thinking</span>
-                  <span className="animate-bounce">...</span>
+                  <span className="animate-pulse">...</span>
                 </span>
               ) : (
                 <>
-                  <Send className="h-5 w-5" />
-                  <span>Send</span>
+                  <Send className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <span className="hidden sm:inline">Send</span>
                 </>
               )}
             </button>

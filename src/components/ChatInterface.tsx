@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getGeminiResponse } from "../services/geminiService";
 import ImageUploader from "./ImageUploader"; // Removed unused imports
 import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
-// Removed unused imports: LoadingAnimation, Upload
+
 
 const ChatInterface = () => {
   const [messages, setMessages] = useState<
