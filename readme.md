@@ -2,24 +2,46 @@
 
 <div align="center">
   <img src="public/ai-connect-banner.png" alt="AI Connect Banner" width="800"/>
+  
+  <div style="display: flex; justify-content: center; gap: 10px;">
+    ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+    ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+    ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+    ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+    ![Google Cloud](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
+  </div>
 
-  ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)
-
-  ![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)
-
-  ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
+  <p align="center">
+    <strong>A modern AI chat interface powered by Google's Gemini AI 🚀</strong>
+  </p>
 </div>
+
+## 🌟 Overview
+
+AI Connect is an intelligent chat interface that leverages Google's Gemini AI to provide smart, context-aware responses. With support for both text and image inputs, it offers a versatile platform for AI-powered conversations.
 
 ## ✨ Features
 
-- 🎯 Real-time AI responses powered by Google's Gemini AI
-- 🌓 Dark/Light mode support
-- 💬 Interactive chat interface
-- 📱 Fully responsive design
-- 🚀 Fast and optimized performance
-- 🎨 Clean and modern UI
-- 📝 Markdown support in responses
-- 🔄 Follow-up questions capability
+- 🎯 **Advanced AI Integration**
+  - Powered by Google's Gemini AI
+  - Real-time response generation
+  - Context-aware conversations
+  
+- 💡 **Smart Capabilities**
+  - Image analysis and understanding
+  - Code explanation and generation
+  - Natural language processing
+  
+- 🎨 **Modern UI/UX**
+  - Clean and intuitive interface
+  - Dark/Light mode support
+  - Responsive design for all devices
+  
+- ⚡ **Technical Features**
+  - Fast response times
+  - Markdown support in responses
+  - Follow-up questions capability
+  - Image upload functionality
 
 ## 🚀 Quick Start
 
@@ -31,13 +53,13 @@
 
 ### Installation
 
-1. Clone the repository:
-```bash
-git clone https://github.com/pratham-prog861/ai-connect.git
-cd ai-connect
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/pratham-prog861/ai-connect.git
+   cd ai-connect
 ```
 
-2. Install dependencies:
+2. **Install dependencies:**
 ```bash
     npm install
 ```
